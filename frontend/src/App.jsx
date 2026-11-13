@@ -1,213 +1,298 @@
 
-import { useEffect, useRef, useState, useLayoutEffect } from 'react'
-import { ArrowDown, ArrowUpRight, VolumeX } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './App.css'
+import IntelligenceDesk from './components/IntelligenceDesk'
+import WaterEffect from './components/WaterEffect'
 
 gsap.registerPlugin(ScrollTrigger)
 
 function App() {
-  useLayoutEffect(() => {
-  const ctx = gsap.context(() => {
+  const [page, setPage] = useState('home')
 
-    // Hero moves upward as the visitor leaves it
-    gsap.to('.hero-content', {
-      y: -110,
-      opacity: 0,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.hero-section',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 1,
-      },
-    })
-
-    // Each section reveals itself while scrolling
-    gsap.utils.toArray('.reveal-up').forEach((element) => {
-      gsap.fromTo(
-        element,
-        {
-          y: 65,
-          opacity: 0,
-        },
-        {
-          y: 0,
-          opacity: 1,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: element,
-            start: 'top 88%',
-            end: 'top 48%',
-            scrub: 1,
-          },
-        }
-      )
-    })
-
-  })
-
-  return () => ctx.revert()
-}, [])
-  const videoRef = useRef(null)
-  const [introComplete, setIntroComplete] = useState(false)
-  const [showTitle, setShowTitle] = useState(false)
-  const [videoFailed, setVideoFailed] = useState(false)
-
-  const finishIntro = () => {
-    if (videoRef.current) {
-      videoRef.current.pause()
-    }
-    setIntroComplete(true)
-    setShowTitle(true)
-  }
-
-  const handleTimeUpdate = () => {
-    const video = videoRef.current
-    if (!video || !video.duration) return
-
-    if (video.currentTime >= video.duration - 2.8) {
-      setShowTitle(true)
-    }
-  }
-
+  // Standalone pointer listener for the water ripple effect
   useEffect(() => {
-    document.body.classList.toggle('intro-active', !introComplete)
+    const handlePointerMove = (event) => {
+      document.documentElement.style.setProperty(
+        '--cursor-x',
+        `${event.clientX}px`
+      )
+
+      document.documentElement.style.setProperty(
+        '--cursor-y',
+        `${event.clientY}px`
+      )
+    }
+
+    window.addEventListener('pointermove', handlePointerMove)
 
     return () => {
-      document.body.classList.remove('intro-active')
+      window.removeEventListener('pointermove', handlePointerMove)
     }
-  }, [introComplete])
+  }, [])
+
+  useEffect(() => {
+    if (page !== 'home') return
+
+    const ctx = gsap.context(() => {
+      // HERO TEXT REVEAL
+      gsap.from('.hero-copy > *', {
+        y: 35,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.15,
+        ease: 'power3.out',
+      })
+
+      // HERO IMAGE REVEAL
+      gsap.from('.hero-image', {
+        scale: 1.08,
+        opacity: 0,
+        duration: 1.5,
+        ease: 'power3.out',
+      })
+
+      // GENERAL SECTION REVEALS
+      gsap.utils.toArray('.reveal').forEach((element) => {
+        gsap.from(element, {
+          y: 55,
+          opacity: 0,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: element,
+            start: 'top 85%',
+            once: true,
+          },
+        })
+      })
+
+      // HERO IMAGE PARALLAX
+      gsap.to('.hero-image img', {
+        yPercent: 12,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
+        },
+      })
+
+      // PINNED STORYTELLING
+      const storyTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: '.statement-section',
+          start: 'top top',
+          end: '+=120%',
+          pin: true,
+          scrub: 1,
+          anticipatePin: 1,
+        },
+      })
+
+      storyTimeline
+        .fromTo(
+          '.statement-image img',
+          { scale: 1 },
+          { scale: 1.2, ease: 'none' },
+          0
+        )
+        .fromTo(
+          '.statement-content',
+          { x: 70, opacity: 0 },
+          { x: 0, opacity: 1, ease: 'none' },
+          0.15
+        )
+
+      // PLATFORM PILLARS — SEQUENTIAL REVEAL
+      gsap.from('.platform-card', {
+        y: 65,
+        opacity: 0,
+        duration: 0.9,
+        stagger: 0.2,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.platform-grid',
+          start: 'top 78%',
+          once: true,
+        },
+      })
+    }) // CLOSE gsap.context()
+
+    return () => ctx.revert()
+  }, [page])
+
+  if (page === 'desk') {
+    return <IntelligenceDesk onBack={() => setPage('home')} />
+  }
 
   return (
-    <main className="floodsense">
-      <section className={`intro ${introComplete ? 'intro-finished' : ''}`}>
-        {!videoFailed && (
-          <video
-            ref={videoRef}
-            className="ocean-video"
-            autoPlay
-            muted
-            playsInline
-            preload="auto"
-            onTimeUpdate={handleTimeUpdate}
-            onEnded={() => setIntroComplete(true)}
-            onError={() => setVideoFailed(true)}
-          >
-            <source src="/videos/ocean-intro.mp4" type="video/mp4" />
-          </video>
-        )}
+    <main className="editorial-site">
+      <WaterEffect />
+      
+      <nav className="navbar">
+        <a href="#" className="brand">
+          FLOODSENSE<span>®</span>
+        </a>
 
-        <div className="intro-shade" />
-
-        <div className={`intro-brand ${showTitle ? 'brand-visible' : ''}`}>
-          <span className="brand-eyebrow">INTELLIGENCE FOR HUMANITY</span>
-          <h1>FLOOD<span>SENSE</span></h1>
-          <p>Analyzing for a safer tomorrow.</p>
+        <div className="nav-links">
+          <a href="#mission">Our mission</a>
+          <a href="#approach">Our approach</a>
+          <a href="#platform">Platform</a>
         </div>
 
-        {!introComplete && (
-          <button className="skip-button" onClick={finishIntro}>
-            Skip introduction <ArrowUpRight size={15} />
-          </button>
-        )}
+        <button
+          type="button"
+          className="nav-cta"
+          onClick={() => setPage('desk')}
+        >
+          Explore platform <ArrowUpRight size={15} />
+        </button>
+      </nav>
 
-        <div className="sound-indicator">
-          <VolumeX size={14} />
-          <span>SOUND MUTED</span>
+      <section className="hero">
+        <div className="hero-copy">
+          <p className="eyebrow">INTELLIGENCE FOR A SAFER TOMORROW</p>
+
+          <h1>
+            When disaster
+            <br />
+            speaks, <em>we listen.</em>
+          </h1>
+
+          <p className="hero-description">
+            Every emergency message carries a story.
+            Every second carries a decision.
+            We turn scattered signals into meaningful action.
+          </p>
+
+          <a href="#mission" className="text-link">
+            Discover our purpose <ArrowDown size={16} />
+          </a>
+        </div>
+
+        <div className="hero-image">
+          <img
+            src="https://images.unsplash.com/photo-1547683905-f686c993aae5?auto=format&fit=crop&w=1800&q=90"
+            alt="Dramatic storm clouds over a flooded landscape"
+          />
+          <span className="image-caption">
+            READING THE SIGNALS. RESPONDING WITH PURPOSE.
+          </span>
         </div>
       </section>
 
-      <section className="ocean-world">
-        <div className="underwater-atmosphere" />
-
-        <nav className="navbar">
-          <a className="nav-brand" href="#home">
-            FLOOD<span>SENSE</span>
-          </a>
-
-          <div className="nav-links">
-            <a href="#mission">Our mission</a>
-            <a href="#platform">Platform</a>
-          </div>
-
-          <a className="nav-action" href="#platform">
-            Explore platform <ArrowUpRight size={15} />
-          </a>
-        </nav>
-
-        <section className="hero-section" id="home">
-          <div className="hero-content">
-            <span className="hero-label">
-              <span className="status-dot" />
-              INTELLIGENCE BELOW THE SURFACE
-            </span>
-
-            <h2>
-              Every message
-              <br />
-              <span>could save a life.</span>
-            </h2>
-
-            <p className="hero-description">
-              Turning emergency messages into actionable intelligence.
-              Because when floods strike, every second matters.
-            </p>
-
-            <a className="hero-button" href="#platform">
-              Discover FloodSense <ArrowUpRight size={17} />
-            </a>
-          </div>
-
-          <div className="scroll-indicator">
-            <ArrowDown size={16} />
-            <span>SCROLL TO EXPLORE</span>
-          </div>
-
-          <div className="hero-coordinate">
-            <span>FLOODSENSE / 001</span>
-            <span>BUILT FOR THE UNSEEN</span>
-          </div>
-        </section>
-
-        <section className="mission-section reveal-up" id="mission">
-          <span className="section-kicker">01 / THE PURPOSE</span>
-          <h2>
-            When water rises,
+      <section className="intro-section" id="mission">
+        <div className="intro-grid">
+          <h2 className="reveal">
+            In a crisis,
             <br />
-            <span>information matters.</span>
+            <em>clarity is everything.</em>
+          </h2>
+
+          <div className="intro-copy reveal">
+            <p>
+              During a flood, thousands of messages can emerge from
+              the same moment of uncertainty. Calls for help, reports
+              of rising water, requests for rescue.
+            </p>
+            <p>
+              But not every message reaches the right people at
+              the right time. The challenge is finding the signals
+              that matter most.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="statement-section" id="approach">
+        <div className="statement-image">
+          <img
+            src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1800&q=90"
+            alt="Powerful ocean waves"
+          />
+        </div>
+
+        <div className="statement-content">
+          <h2>
+            From noise
+            <br />
+            to <em>knowledge.</em>
           </h2>
           <p>
-            FloodSense is designed to interpret flood-related emergency
-            messages and help identify the situations that need attention.
+            FloodSense uses intelligent message analysis to help
+            identify emergencies, understand severity, and bring
+            urgent information into focus.
           </p>
-        </section>
+        </div>
+      </section>
 
-        <section className="platform-section reveal-up" id="platform">
-          <span className="section-kicker">02 / THE PLATFORM</span>
-          <h2>From messages to meaning.</h2>
-          <p>
-            Our emergency message intelligence platform is the next part
-            of this experience.
-          </p>
-          <div className="platform-preview">
-            <span className="status-dot" />
-            <span>ANALYSIS INTERFACE — IN DEVELOPMENT</span>
+      <section className="platform-section" id="platform">
+        <h2>
+          Turning information
+          <br />
+          into <em>action.</em>
+        </h2>
+
+        <div className="platform-grid">
+          <article className="platform-card">
+            <span>01</span>
+            <h3>Understand</h3>
+            <p>Identify messages related to flood emergencies.</p>
+          </article>
+
+          <article className="platform-card">
+            <span>02</span>
+            <h3>Prioritise</h3>
+            <p>Bring urgent reports and high-priority needs forward.</p>
+          </article>
+
+          <article className="platform-card">
+            <span>03</span>
+            <h3>Interpret</h3>
+            <p>Extract meaningful signals from incoming information.</p>
+          </article>
+        </div>
+
+        <div className="desk-invitation">
+          <div className="invitation-content">
+            <h2>
+              Every signal
+              <br />
+              deserves to be <em>heard.</em>
+            </h2>
+
+            <p>
+              Explore how FloodSense interprets emergency messages
+              and brings critical information into focus.
+            </p>
+
+            <button
+              type="button"
+              className="invitation-button"
+              onClick={() => setPage('desk')}
+            >
+              Enter the Intelligence Desk
+              <ArrowUpRight size={18} />
+            </button>
           </div>
-        </section>
 
-        <footer className="footer">
-          <a className="nav-brand" href="#home">
-            FLOOD<span>SENSE</span>
-          </a>
-          <span>ANALYZING FOR A SAFER TOMORROW.</span>
-          <span>© 2026 FLOODSENSE</span>
-        </footer>
+          <div className="invitation-caption">
+            A CLEARER PICTURE BEGINS HERE.
+          </div>
+        </div>
+
+        <div className="platform-footer reveal">
+          <p>Technology with a human purpose.</p>
+          <span>FLOODSENSE © 2026</span>
+        </div>
       </section>
     </main>
   )
 }
 
-
 export default App
+
