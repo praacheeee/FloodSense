@@ -1,9 +1,29 @@
+# Dependencies & Virtual Environments
 node_modules/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Build Outputs
 dist/
+dist-ssr/
+
+# Environment Variables & Secrets
 .env
 .env.*
 !.env.example
-__pycache__/
-*.py[cod]
-.venv/
-venv/
+
+# Local Logs & Diagnostics
+*.log
+logs/
+
+# Datasets (Training & external data excluded from deployment)
+data/
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.vercel/

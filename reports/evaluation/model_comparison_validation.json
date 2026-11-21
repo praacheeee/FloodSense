@@ -1,0 +1,624 @@
+{
+  "logistic_regression": {
+    "accuracy": 0.6447,
+    "macro_f1": 0.5767,
+    "weighted_f1": 0.657,
+    "per_class": {
+      "caution_and_advice": {
+        "precision": 0.3654,
+        "recall": 0.5938,
+        "f1_score": 0.4524,
+        "support": 32
+      },
+      "displaced_people_and_evacuations": {
+        "precision": 0.5,
+        "recall": 0.1667,
+        "f1_score": 0.25,
+        "support": 6
+      },
+      "infrastructure_and_utility_damage": {
+        "precision": 0.5385,
+        "recall": 0.6481,
+        "f1_score": 0.5882,
+        "support": 54
+      },
+      "injured_or_dead_people": {
+        "precision": 0.7736,
+        "recall": 0.8542,
+        "f1_score": 0.8119,
+        "support": 48
+      },
+      "missing_or_found_people": {
+        "precision": 0.7222,
+        "recall": 0.9286,
+        "f1_score": 0.8125,
+        "support": 14
+      },
+      "not_humanitarian": {
+        "precision": 0.4041,
+        "recall": 0.6082,
+        "f1_score": 0.4856,
+        "support": 97
+      },
+      "other_relevant_information": {
+        "precision": 0.4196,
+        "recall": 0.4138,
+        "f1_score": 0.4167,
+        "support": 145
+      },
+      "requests_or_urgent_needs": {
+        "precision": 0.434,
+        "recall": 0.6765,
+        "f1_score": 0.5287,
+        "support": 68
+      },
+      "rescue_volunteering_or_donation_effort": {
+        "precision": 0.875,
+        "recall": 0.6912,
+        "f1_score": 0.7723,
+        "support": 557
+      },
+      "sympathy_and_support": {
+        "precision": 0.6607,
+        "recall": 0.6379,
+        "f1_score": 0.6491,
+        "support": 116
+      }
+    },
+    "confusion_matrix": [
+      [
+        19,
+        0,
+        2,
+        0,
+        0,
+        2,
+        5,
+        2,
+        2,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        2,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1
+      ],
+      [
+        4,
+        0,
+        35,
+        1,
+        0,
+        0,
+        13,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        41,
+        3,
+        0,
+        0,
+        1,
+        2,
+        1
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        13,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      [
+        2,
+        0,
+        6,
+        1,
+        0,
+        59,
+        17,
+        2,
+        7,
+        3
+      ],
+      [
+        16,
+        1,
+        8,
+        3,
+        0,
+        31,
+        60,
+        3,
+        20,
+        3
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        4,
+        3,
+        46,
+        10,
+        3
+      ],
+      [
+        8,
+        0,
+        11,
+        4,
+        2,
+        38,
+        37,
+        45,
+        385,
+        27
+      ],
+      [
+        1,
+        0,
+        3,
+        1,
+        0,
+        12,
+        8,
+        5,
+        12,
+        74
+      ]
+    ],
+    "labels": [
+      "caution_and_advice",
+      "displaced_people_and_evacuations",
+      "infrastructure_and_utility_damage",
+      "injured_or_dead_people",
+      "missing_or_found_people",
+      "not_humanitarian",
+      "other_relevant_information",
+      "requests_or_urgent_needs",
+      "rescue_volunteering_or_donation_effort",
+      "sympathy_and_support"
+    ],
+    "model_name": "Logistic Regression (balanced)",
+    "hyperparameters": {
+      "class_weight": "balanced",
+      "max_iter": 1000,
+      "random_state": 42,
+      "solver": "lbfgs",
+      "C": 1.0
+    }
+  },
+  "linear_svc": {
+    "accuracy": 0.7027,
+    "macro_f1": 0.6078,
+    "weighted_f1": 0.7003,
+    "per_class": {
+      "caution_and_advice": {
+        "precision": 0.4722,
+        "recall": 0.5312,
+        "f1_score": 0.5,
+        "support": 32
+      },
+      "displaced_people_and_evacuations": {
+        "precision": 1.0,
+        "recall": 0.1667,
+        "f1_score": 0.2857,
+        "support": 6
+      },
+      "infrastructure_and_utility_damage": {
+        "precision": 0.6207,
+        "recall": 0.6667,
+        "f1_score": 0.6429,
+        "support": 54
+      },
+      "injured_or_dead_people": {
+        "precision": 0.8235,
+        "recall": 0.875,
+        "f1_score": 0.8485,
+        "support": 48
+      },
+      "missing_or_found_people": {
+        "precision": 0.7778,
+        "recall": 1.0,
+        "f1_score": 0.875,
+        "support": 14
+      },
+      "not_humanitarian": {
+        "precision": 0.4615,
+        "recall": 0.433,
+        "f1_score": 0.4468,
+        "support": 97
+      },
+      "other_relevant_information": {
+        "precision": 0.4276,
+        "recall": 0.4276,
+        "f1_score": 0.4276,
+        "support": 145
+      },
+      "requests_or_urgent_needs": {
+        "precision": 0.5507,
+        "recall": 0.5588,
+        "f1_score": 0.5547,
+        "support": 68
+      },
+      "rescue_volunteering_or_donation_effort": {
+        "precision": 0.8425,
+        "recall": 0.8546,
+        "f1_score": 0.8485,
+        "support": 557
+      },
+      "sympathy_and_support": {
+        "precision": 0.6893,
+        "recall": 0.6121,
+        "f1_score": 0.6484,
+        "support": 116
+      }
+    },
+    "confusion_matrix": [
+      [
+        17,
+        0,
+        2,
+        0,
+        0,
+        0,
+        9,
+        2,
+        2,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        3,
+        1
+      ],
+      [
+        3,
+        0,
+        36,
+        1,
+        0,
+        0,
+        10,
+        0,
+        4,
+        0
+      ],
+      [
+        0,
+        0,
+        1,
+        42,
+        2,
+        0,
+        0,
+        1,
+        1,
+        1
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        14,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        4,
+        1,
+        0,
+        42,
+        31,
+        1,
+        8,
+        9
+      ],
+      [
+        12,
+        0,
+        8,
+        3,
+        0,
+        23,
+        62,
+        3,
+        30,
+        4
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        4,
+        5,
+        38,
+        19,
+        2
+      ],
+      [
+        2,
+        0,
+        5,
+        1,
+        2,
+        12,
+        23,
+        21,
+        476,
+        15
+      ],
+      [
+        1,
+        0,
+        2,
+        2,
+        0,
+        10,
+        5,
+        3,
+        22,
+        71
+      ]
+    ],
+    "labels": [
+      "caution_and_advice",
+      "displaced_people_and_evacuations",
+      "infrastructure_and_utility_damage",
+      "injured_or_dead_people",
+      "missing_or_found_people",
+      "not_humanitarian",
+      "other_relevant_information",
+      "requests_or_urgent_needs",
+      "rescue_volunteering_or_donation_effort",
+      "sympathy_and_support"
+    ],
+    "model_name": "LinearSVC (balanced)",
+    "hyperparameters": {
+      "class_weight": "balanced",
+      "random_state": 42,
+      "max_iter": 2000,
+      "C": 1.0
+    }
+  },
+  "complement_nb": {
+    "accuracy": 0.6913,
+    "macro_f1": 0.5221,
+    "weighted_f1": 0.6605,
+    "per_class": {
+      "caution_and_advice": {
+        "precision": 0.6,
+        "recall": 0.375,
+        "f1_score": 0.4615,
+        "support": 32
+      },
+      "displaced_people_and_evacuations": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0,
+        "support": 6
+      },
+      "infrastructure_and_utility_damage": {
+        "precision": 0.6667,
+        "recall": 0.5185,
+        "f1_score": 0.5833,
+        "support": 54
+      },
+      "injured_or_dead_people": {
+        "precision": 0.7273,
+        "recall": 0.8333,
+        "f1_score": 0.7767,
+        "support": 48
+      },
+      "missing_or_found_people": {
+        "precision": 0.6087,
+        "recall": 1.0,
+        "f1_score": 0.7568,
+        "support": 14
+      },
+      "not_humanitarian": {
+        "precision": 0.5385,
+        "recall": 0.2887,
+        "f1_score": 0.3758,
+        "support": 97
+      },
+      "other_relevant_information": {
+        "precision": 0.463,
+        "recall": 0.3448,
+        "f1_score": 0.3953,
+        "support": 145
+      },
+      "requests_or_urgent_needs": {
+        "precision": 0.6538,
+        "recall": 0.25,
+        "f1_score": 0.3617,
+        "support": 68
+      },
+      "rescue_volunteering_or_donation_effort": {
+        "precision": 0.7306,
+        "recall": 0.9443,
+        "f1_score": 0.8238,
+        "support": 557
+      },
+      "sympathy_and_support": {
+        "precision": 0.7802,
+        "recall": 0.6121,
+        "f1_score": 0.686,
+        "support": 116
+      }
+    },
+    "confusion_matrix": [
+      [
+        12,
+        0,
+        1,
+        3,
+        1,
+        2,
+        6,
+        0,
+        7,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        5,
+        0
+      ],
+      [
+        0,
+        0,
+        28,
+        2,
+        0,
+        0,
+        14,
+        0,
+        8,
+        2
+      ],
+      [
+        0,
+        0,
+        0,
+        40,
+        3,
+        0,
+        0,
+        0,
+        3,
+        2
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        14,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        2,
+        0,
+        6,
+        1,
+        0,
+        28,
+        28,
+        0,
+        28,
+        4
+      ],
+      [
+        6,
+        0,
+        6,
+        6,
+        2,
+        14,
+        50,
+        1,
+        54,
+        6
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        17,
+        49,
+        1
+      ],
+      [
+        0,
+        0,
+        1,
+        2,
+        2,
+        7,
+        8,
+        6,
+        526,
+        5
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        2,
+        2,
+        40,
+        71
+      ]
+    ],
+    "labels": [
+      "caution_and_advice",
+      "displaced_people_and_evacuations",
+      "infrastructure_and_utility_damage",
+      "injured_or_dead_people",
+      "missing_or_found_people",
+      "not_humanitarian",
+      "other_relevant_information",
+      "requests_or_urgent_needs",
+      "rescue_volunteering_or_donation_effort",
+      "sympathy_and_support"
+    ],
+    "model_name": "Complement Naive Bayes",
+    "hyperparameters": {
+      "alpha": 1.0
+    }
+  }
+}

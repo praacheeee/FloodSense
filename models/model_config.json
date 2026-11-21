@@ -1,0 +1,41 @@
+{
+  "model_key": "linear_svc",
+  "model_name": "LinearSVC (balanced)",
+  "is_calibrated": true,
+  "calibration_method": "Platt scaling (CalibratedClassifierCV, cv=5)",
+  "hyperparameters": {
+    "class_weight": "balanced",
+    "random_state": 42,
+    "max_iter": 2000,
+    "C": 1.0
+  },
+  "vectorizer_parameters": {
+    "ngram_range": [
+      1,
+      2
+    ],
+    "min_df": 2,
+    "sublinear_tf": true
+  },
+  "vocabulary_size": 29370,
+  "class_labels": [
+    "caution_and_advice",
+    "displaced_people_and_evacuations",
+    "infrastructure_and_utility_damage",
+    "injured_or_dead_people",
+    "missing_or_found_people",
+    "not_humanitarian",
+    "other_relevant_information",
+    "requests_or_urgent_needs",
+    "rescue_volunteering_or_donation_effort",
+    "sympathy_and_support"
+  ],
+  "dataset_splits": {
+    "train": 7815,
+    "dev": 1137,
+    "test": 2214
+  },
+  "selection_metric": "validation_macro_f1",
+  "validation_macro_f1": 0.6078,
+  "scope_restriction": "HumAID humanitarian communication categories (not severity ratings)"
+}

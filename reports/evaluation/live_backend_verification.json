@@ -1,0 +1,118 @@
+{
+  "health": {
+    "status": 200,
+    "body": {
+      "status": "online",
+      "service": "FloodSense Intelligence API",
+      "analyzer_ready": true
+    }
+  },
+  "info": {
+    "status": 200,
+    "body": {
+      "system": "FloodSense",
+      "version": "1.0.0",
+      "architecture": "Severity-First 5-Stage Emergency Triage",
+      "models": {
+        "humanitarian_classifier": "TF-IDF + Calibrated LinearSVC (10 HumAID classes)",
+        "severity_classifier": "Grounded Context-Aware Rules (Low/Moderate/High/Critical)",
+        "priority_scorer": "Additive Indicator Rubric (0 - 100)"
+      },
+      "disclaimer": "Provisional baseline system for emergency situational awareness. Not an official dispatch standard."
+    }
+  },
+  "cors": {
+    "status": 200,
+    "allow_origin": "http://localhost:5173"
+  },
+  "test_cases": [
+    {
+      "label": "Critical - Life Threat",
+      "input_message": "Water is rising rapidly near Aluva! 4 families are trapped on the terrace and need immediate boat rescue!",
+      "status_code": 200,
+      "flood_detected": true,
+      "severity_level": "Critical",
+      "priority_score": 100,
+      "priority_tier": "P1 - Critical Priority",
+      "humanitarian_category": "requests_or_urgent_needs",
+      "supporting_indicators": [
+        "life_threat",
+        "water_dynamics"
+      ]
+    },
+    {
+      "label": "High - Structural Ingress & Dam Burst",
+      "input_message": "The dam has burst and water is entering houses rapidly. Highway bridge collapsed.",
+      "status_code": 200,
+      "flood_detected": true,
+      "severity_level": "High",
+      "priority_score": 65,
+      "priority_tier": "P2 - High Priority",
+      "humanitarian_category": "infrastructure_and_utility_damage",
+      "supporting_indicators": [
+        "water_ingress",
+        "infrastructure_impact"
+      ]
+    },
+    {
+      "label": "Moderate - Flood Warning & Advisory",
+      "input_message": "Flood alert issued for coastal zones. Flood warning in effect, river overflowing.",
+      "status_code": 200,
+      "flood_detected": true,
+      "severity_level": "Moderate",
+      "priority_score": 35,
+      "priority_tier": "P3 - Moderate Priority",
+      "humanitarian_category": "caution_and_advice",
+      "supporting_indicators": [
+        "water_dynamics"
+      ]
+    },
+    {
+      "label": "Low - Emotional Support / Prayers",
+      "input_message": "Heartfelt prayers and support for everyone dealing with flood recovery in Kerala.",
+      "status_code": 200,
+      "flood_detected": true,
+      "severity_level": "Low",
+      "priority_score": 5,
+      "priority_tier": "P4 - Low Priority",
+      "humanitarian_category": "sympathy_and_support",
+      "supporting_indicators": []
+    },
+    {
+      "label": "Negated - Hazard Denied",
+      "input_message": "Situation is completely normal here, no flooding and no casualties reported.",
+      "status_code": 200,
+      "flood_detected": false,
+      "severity_level": "Not Applicable",
+      "priority_score": 0,
+      "priority_tier": "P0 - Non-Emergency / Routine",
+      "humanitarian_category": null,
+      "supporting_indicators": []
+    },
+    {
+      "label": "Historical - Retrospective",
+      "input_message": "Remembering the devastating flood in 2018 when many people died and bridges were destroyed.",
+      "status_code": 200,
+      "flood_detected": true,
+      "severity_level": "Low",
+      "priority_score": 5,
+      "priority_tier": "P4 - Low Priority",
+      "humanitarian_category": "injured_or_dead_people",
+      "supporting_indicators": []
+    },
+    {
+      "label": "Non-Flood - Traffic Accident",
+      "input_message": "Car accident on main street near the vegetable market, police investigating.",
+      "status_code": 200,
+      "flood_detected": false,
+      "severity_level": "Not Applicable",
+      "priority_score": 0,
+      "priority_tier": "P0 - Non-Emergency / Routine",
+      "humanitarian_category": null,
+      "supporting_indicators": []
+    }
+  ],
+  "empty_validation": {
+    "status": 422
+  }
+}
