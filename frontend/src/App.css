@@ -332,11 +332,104 @@ a {
   color: #718087;
 }
 
+.desk-invitation {
+  padding: 115px 0 85px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.invitation-content {
+  max-width: 620px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.invitation-content h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(44px, 5.2vw, 76px);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.045em;
+  margin: 0 0 24px;
+  color: #172b35;
+}
+
+.invitation-content h2 em {
+  font-style: italic;
+  font-weight: 500;
+  color: #78939a;
+}
+
+.invitation-content p {
+  max-width: 440px;
+  font-size: 14px;
+  line-height: 1.95;
+  color: #66767b;
+  margin: 0 0 36px;
+}
+
+.invitation-button {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid #172b35;
+  background: #172b35;
+  color: #f4f1e9;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  border-radius: 0;
+  padding: 16px 26px;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  line-height: 1;
+  outline: none;
+  transition: background-color 0.25s ease, border-color 0.25s ease, gap 0.25s ease, transform 0.2s ease;
+}
+
+.invitation-button:hover {
+  background: #25404d;
+  border-color: #25404d;
+  gap: 18px;
+}
+
+.invitation-button:focus-visible {
+  outline: 2px solid #78939a;
+  outline-offset: 3px;
+}
+
+.invitation-button:active {
+  transform: translateY(1px);
+}
+
+.invitation-button svg {
+  transition: transform 0.25s ease;
+}
+
+.invitation-button:hover svg {
+  transform: translate(2px, -2px);
+}
+
+.invitation-caption {
+  margin-top: 24px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: #81969a;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
 .platform-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 55px 0 30px;
+  padding: 48px 0 30px;
+  border-top: 1px solid #c9cec8;
   color: #849196;
   font-size: 10px;
   letter-spacing: 0.12em;
@@ -374,6 +467,14 @@ a {
 
   .statement-content {
     padding: 70px 9%;
+  }
+
+  .desk-invitation {
+    padding: 90px 0 65px;
+  }
+
+  .invitation-content h2 {
+    font-size: clamp(38px, 6vw, 58px);
   }
 }
 
@@ -454,8 +555,39 @@ a {
   }
 
   .platform-footer {
-    gap: 20px;
+    padding: 35px 0 25px;
+    gap: 16px;
     flex-wrap: wrap;
+  }
+
+  .desk-invitation {
+    padding: 70px 0 50px;
+  }
+
+  .invitation-content {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .invitation-content h2 {
+    font-size: clamp(32px, 8.5vw, 44px);
+    margin-bottom: 18px;
+  }
+
+  .invitation-content p {
+    font-size: 13px;
+    line-height: 1.85;
+    margin-bottom: 28px;
+  }
+
+  .invitation-button {
+    width: 100%;
+    justify-content: space-between;
+    padding: 15px 20px;
+  }
+
+  .invitation-caption {
+    margin-top: 18px;
   }
 }
 
