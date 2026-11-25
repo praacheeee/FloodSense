@@ -1,22 +1,22 @@
-﻿import re
+import re
 from typing import Dict, List
 
 FLOOD_PATTERNS = {
     "Flood event": [
         r"\bflood(?:s|ed|ing)?\b",
         r"\bflash flood(?:s)?\b",
-        r"\bfloodwater\b",
+        r"\bfloodwaters?\b",
         r"\bflood waters?\b",
     ],
     "Rising water": [
-        r"\bwater is rising\b",
-        r"\brising water\b",
-        r"\bwater level(?:s)? rising\b",
-        r"\bwater level(?:s)? increasing\b",
+        r"\b(?:flood\s*)?waters?\s+(?:(?:is|are)\s+)?rising\b",
+        r"\brising\s+(?:flood\s*)?waters?\b",
+        r"\b(?:flood\s*)?waters?\s+levels?\s+(?:(?:is|are)\s+)?rising\b",
+        r"\b(?:flood\s*)?waters?\s+levels?\s+(?:(?:is|are)\s+)?increasing\b",
     ],
     "Water entering areas": [
-        r"\bwater entering (?:the )?(?:house|home|building|village)\b",
-        r"\bwater inside (?:the )?(?:house|home|building)\b",
+        r"\b(?:flood\s*)?waters?\s+(?:is\s+)?entering (?:the )?(?:houses?|homes?|buildings?|villages?)\b",
+        r"\b(?:flood\s*)?waters?\s+inside (?:the )?(?:houses?|homes?|buildings?)\b",
         r"\bsubmerged\b",
         r"\binundated\b",
         r"\bunder water\b",
@@ -32,6 +32,7 @@ FLOOD_PATTERNS = {
         r"\bflood alert\b",
         r"\bflood evacuation\b",
         r"\bflood rescue\b",
+        r"\b(?:rescue\s+boat|boat\s+rescue)\b",
     ],
 }
 

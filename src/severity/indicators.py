@@ -22,13 +22,22 @@ from typing import Any, Dict, List, Set
 # Regex patterns for core indicator families
 INDICATOR_PATTERNS = {
     "life_threat": [
-        r"\b(?:people|families|family|residents|resident|children|we|they|someone|parents|persons?)\s+(?:(?:are|is)\s+)?(?:trapped|stranded)\b",
-        r"\b(?:trapped|stranded)\s+(?:on\s+the\s+)?(?:roof|terrace|tree|road|island|building)\b",
+        # People or vulnerable groups trapped, stranded, stuck, or marooned
+        r"\b(?:(?:\d+|one|two|three|four|five|six|several|many|some|few)\s+)?(?:people|families|family|residents?|children|child|kids?|we|they|someone|parents?|persons?|citizens?)\s+(?:(?:are|is)\s+)?(?:trapped|stranded|stuck|marooned)\b",
+        # Entrapment directly in or by floodwaters/water
+        r"\b(?:trapped|stranded|stuck|marooned)\s+(?:in|by|amid|under)\s+(?:the\s+)?(?:floodwaters?|flood\s+waters?|rising\s+waters?|flood|floods|water)\b",
+        # Entrapment in structures, buildings, roofs, or elevated locations
+        r"\b(?:trapped|stranded|stuck|marooned)\s+(?:on|in|inside)\s+(?:the\s+)?(?:roof|terrace|tree|road|island|building|houses?|homes?|attics?|second\s+floor|rooms?|vehicles?|cars?)\b",
+        r"\b(?:trapped|stranded|stuck|marooned)\s+inside\b",
+        # Inability to escape or evacuate
+        r"\b(?:people|families|residents|children|we|someone)\s+(?:are\s+)?(?:unable|cannot|can't)\s+(?:to\s+)?(?:leave|escape|evacuate|get\s+out)\b",
         r"\bmarooned\b",
         r"\b(?:drowning|swept\s+away)\b",
+        # Urgent rescue pleas
         r"\bimmediate\s+rescue\s+(?:needed|required|plea)\b",
         r"\bneed\s+(?:urgent\s+)?(?:boat|helicopter|airlift)\s+rescue\b",
-        r"\b(?:infant|baby|elderly|bedridden|pregnant|patient)\s+(?:stranded|trapped|in\s+danger)\b",
+        # Vulnerable individuals in acute danger
+        r"\b(?:infants?|babys?|babies|children|child|kids?|elderly|seniors?|bedridden|pregnant|patients?|disabled)\s+(?:(?:are|is)\s+)?(?:stranded|trapped|stuck|in\s+danger)\b",
         r"\blife(?:\s+is)?\s+in\s+danger\b",
     ],
     "casualty": [
@@ -39,16 +48,17 @@ INDICATOR_PATTERNS = {
         r"\bbodies\s+recovered\b",
     ],
     "water_ingress": [
-        r"\bwater\s+(?:is\s+)?entering\s+(?:the\s+)?(?:houses?|homes?|buildings?|villages?|rooms?|ground\s+floors?)\b",
-        r"\bwater\s+inside\s+(?:the\s+)?(?:houses?|homes?|buildings?|rooms?)\b",
-        r"\b(?:houses?|homes?|buildings?|villages?|ground\s+floors?)\s+(?:are\s+)?(?:submerged|inundated|under\s+water)\b",
+        r"\b(?:flood\s*)?waters?\s+(?:is\s+)?(?:entering|flooding|filling)\s+(?:the\s+)?(?:houses?|homes?|buildings?|villages?|rooms?|ground\s+floors?)\b",
+        r"\b(?:flood\s*)?waters?\s+inside\s+(?:the\s+)?(?:houses?|homes?|buildings?|rooms?)\b",
+        r"\b(?:houses?|homes?|buildings?|villages?|ground\s+floors?)\s+(?:are\s+)?(?:submerged|inundated|under\s+water|flooding|filling\s+with\s+water)\b",
         r"\b(?:waist|chest|neck)\s+deep\s+water\b",
         r"\b(?:the\s+)?dam\s+(?:has\s+)?(?:burst|breached)\b",
         r"\bflash\s+flood(?:ing)?\b",
     ],
     "water_dynamics": [
-        r"\bwater\s+(?:level\s+)?(?:is\s+)?rising\s+rapidly\b",
-        r"\bwater\s+(?:level\s+)?rising\b",
+        r"\b(?:flood\s*)?waters?\s+(?:levels?\s+)?(?:(?:is|are)\s+)?rising(?:\s+(?:rapidly|fast|quickly))?\b",
+        r"\brising\s+(?:flood\s*)?waters?\b",
+        r"\b(?:flood\s*)?waters?\s+levels?\s+(?:(?:is|are)\s+)?(?:rising|increasing)\b",
         r"\b(?:submerged|inundated|under\s+water)\b",
         r"\b(?:dam\s+burst|dam\s+breach|river\s+overflow(?:ed|ing)?)\b",
         r"\bflood\s+(?:warning|alert|watch)\b",
@@ -71,23 +81,26 @@ INDICATOR_PATTERNS = {
 
 # Contextual qualification patterns
 NEGATION_PATTERNS = [
-    r"\bno\s+(?:flood|flooding|water\s+entering|trapped|casualties|damage|deaths?|injur(?:y|ies))\b",
-    r"\bnot\s+(?:flooded|trapped|submerged|in\s+danger)\b",
-    r"\bwithout\s+(?:any\s+)?(?:casualties|injuries|damage|flooding)\b",
+    r"\bno\s+(?:(?:one|person|people|residents?|citizens?)\s+(?:(?:are|is)\s+)?)?(?:actual\s+|real\s+|further\s+|major\s+|active\s+)?(?:flood|flooding|water\s+entering|trapped|stuck|casualties|damage|deaths?|injur(?:y|ies))\b",
+    r"\bnot\s+(?:actually\s+|really\s+)?(?:flooded|trapped|stuck|submerged|in\s+danger)\b",
+    r"\bwithout\s+(?:any\s+)?(?:actual\s+|real\s+)?(?:casualties|injuries|damage|flooding)\b",
     r"\bsituation\s+is\s+(?:normal|under\s+control|safe)\b",
     r"\bwater\s+(?:has\s+)?receded\b",
+    r"\b(?:all|everyone)\s+(?:(?:is|are|were)\s+)?(?:safe|rescued|accounted\s+for)\b",
+    r"\b(?:rescue\s+(?:teams?|crews?|workers?)|rescuers?|help)\s+(?:(?:have|has|is|are)\s+)?(?:already\s+)?(?:arrived|on\s+site|on\s+scene)\b",
 ]
 
 HYPOTHETICAL_PATTERNS = [
-    r"\bif\s+(?:the\s+)?(?:dam|river|water|flood|rain)\b",
+    r"\bif\s+(?:the\s+)?(?:dam|river|water|flood|rain|people|children)\b",
     r"\bwhat\s+if\b",
-    r"\bin\s+case\s+(?:of\s+)?(?:flooding|dam\s+burst|rain)\b",
+    r"\bin\s+case\s+(?:of\s+)?(?:flooding|dam\s+burst|rain|getting\s+stuck)\b",
     r"\bcould\s+(?:cause|lead\s+to|flood)\b",
     r"\bmight\s+(?:overflow|burst|flood)\b",
 ]
 
 HISTORICAL_PATTERNS = [
-    r"\bin\s+(?:19\d\d|200\d|201[0-9]|202[0-5])\b",  # Historical years prior to active context
+    r"\b(?:during|in|from|back\s+in)\s+(?:the\s+)?(?:19\d\d|200\d|201[0-9]|202[0-5])\b",
+    r"\b(?:19\d\d|200\d|201[0-9]|202[0-5])\s+floods?\b",
     r"\b(?:last|previous)\s+year(?:'s)?\s+flood\b",
     r"\bremembering\s+(?:the\s+)?(?:flood|victims)\b",
     r"\banniversary\s+of\b",

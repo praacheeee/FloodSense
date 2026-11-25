@@ -91,11 +91,26 @@ class SeverityClassifier:
                 "provisional_baseline": True,
             }
 
+        if modifiers["hypothetical"]:
+            return {
+                "severity": "Low",
+                "severity_rank": 1,
+                "confidence_assessment": "hypothetical_conditional_detected",
+                "reasoning": "Message describes a hypothetical or conditional flood scenario rather than an active emergency.",
+                "supporting_indicators": [],
+                "discounted_indicators": indicator_data["discounted_indicators"],
+                "humanitarian_context": pred_cat,
+                "provisional_baseline": True,
+            }
+
         # 2. Critical Evaluation: Direct Life Threat
-        # Active life threat indicators (trapped, drowning, stranded on roof)
+        # Active life threat indicators (trapped, drowning, stranded, stuck in water or structure)
         # OR active casualties with urgent rescue needs
+        # OR acute entrapment combination (residential water ingress + rising water with occupants)
         if "life_threat" in active_inds:
-            factors.append("Active life threat detected (trapped/stranded individuals or immediate rescue plea)")
+            factors.append("Active life threat detected (trapped/stranded/stuck individuals or immediate rescue plea)")
+            if "water_dynamics" in active_inds or "water_ingress" in active_inds:
+                factors.append("Acute life threat compounded by rising or encroaching floodwaters")
             if pred_cat in ["requests_or_urgent_needs", "injured_or_dead_people"]:
                 factors.append(f"Corroborated by humanitarian signal: {pred_cat} (conf: {cat_conf:.2f})")
 
@@ -103,6 +118,22 @@ class SeverityClassifier:
                 "severity": "Critical",
                 "severity_rank": 4,
                 "confidence_assessment": "grounded_life_threat",
+                "reasoning": "; ".join(factors),
+                "supporting_indicators": list(active_inds.keys()),
+                "evidence_snippets": active_evidence,
+                "humanitarian_context": pred_cat,
+                "provisional_baseline": True,
+            }
+
+        # Multi-indicator acute risk combination: residential water ingress + rising water dynamics with occupants
+        if ("water_ingress" in active_inds and "water_dynamics" in active_inds) and any(
+            w in text.lower() for w in ["people", "family", "families", "children", "child", "someone", "residents", "elderly", "we", "occupants"]
+        ):
+            factors.append("Severe entrapment risk: residential water ingress compounded by rising floodwaters with occupants inside")
+            return {
+                "severity": "Critical",
+                "severity_rank": 4,
+                "confidence_assessment": "grounded_residential_entrapment_risk",
                 "reasoning": "; ".join(factors),
                 "supporting_indicators": list(active_inds.keys()),
                 "evidence_snippets": active_evidence,
